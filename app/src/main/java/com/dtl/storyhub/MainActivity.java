@@ -1,5 +1,6 @@
 package com.dtl.storyhub;
 
+import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -7,6 +8,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.dtl.storyhub.database.DatabaseHelper;
+import com.dtl.storyhub.database.dao.UserDAO;
+import com.dtl.storyhub.enums.UserRole;
+import com.dtl.storyhub.models.User;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,5 +28,25 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        UserDAO userDAO = new UserDAO(this);
+        User admin = new User();
+        admin.setFirstName("Long");
+        admin.setLastName("Do");
+        admin.setUsername("admin");
+        admin.setPassword("123456");
+        admin.setEmail("longdo.admin@gmail.com");
+        admin.setRole(UserRole.ADMIN);
+        User newUser = userDAO.insertUser(admin);
+        System.out.println(newUser);
+
+        List<User> userList = userDAO.getAllUsers();
+        System.out.println(userList);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        DatabaseHelper.getInstance(this).closeDatabase();
     }
 }
