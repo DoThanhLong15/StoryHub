@@ -1,3 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">StoryHub</string>
+
+    <!-- Bottom Navigation Titles -->
+    <string name="title_home">Trang chủ</string>
+    <string name="title_categories">Thể loại</string>
+    <string name="title_bookmarks">Tủ truyện</string>
+    <string name="title_profile">Cá nhân</string>
+
+    <!-- Fragment Titles -->
+    <string name="title_story_detail">Chi tiết truyện</string>
+    <string name="title_comic_detail">Chi tiết truyện</string>
+    <string name="title_comic_reader">Đọc truyện</string>
+    <string name="title_novel_reader">Đọc truyện</string>
+    <string name="title_category">Thể loại</string>
+    <string name="title_search">Tìm kiếm</string>
+
+    <!-- Common Text -->
+    <string name="read_now">Đọc ngay</string>
+    <string name="view_all">Xem tất cả</string>
+    <string name="login">Đăng nhập</string>
+    <string name="register">Đăng ký</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="search_placeholder">Tìm kiếm truyện...</string>
+    <string name="empty_bookmark">Bạn chưa đánh dấu truyện nào</string>
+    <string name="please_login">Vui lòng đăng nhập để sử dụng tính năng này</string>
+    <string name="explore_stories">Khám phá truyện</string>
+
+    <!-- Reader Text -->
+    <string name="previous_chapter">Chương trước</string>
+    <string name="next_chapter">Chương sau</string>
+    <string name="chapter_list">Danh sách</string>
+
+    <!-- Category Names -->
+    <string name="category_all">Tất cả</string>
+    <string name="category_action">Hành động</string>
+    <string name="category_romance">Tình cảm</string>
+    <string name="category_comedy">Hài hước</string>
+    <string name="category_fantasy">Viễn tưởng</string>
 </resources>

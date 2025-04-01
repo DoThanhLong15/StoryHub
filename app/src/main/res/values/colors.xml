@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#1a365d</color>
+    <color name="colorPrimaryDark">#0f2748</color>
+    <color name="colorAccent">#ff6b35</color>
+    <color name="background_light">#ffffff</color>
+    <color name="background_dark">#f5f7fa</color>
+    <color name="text_primary">#333333</color>
+    <color name="text_secondary">#4a4a4a</color>
+    <color name="text_hint">#888888</color>
+    <color name="divider">#dddddd</color>
+    <color name="background_novel_reader">#faf8ef</color>
+    <color name="text_novel_content">#2c2c2c</color>
 </resources>

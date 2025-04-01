@@ -1,8 +1,6 @@
 package com.dtl.storyhub;
 
-import android.database.Cursor;
 import android.os.Bundle;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
