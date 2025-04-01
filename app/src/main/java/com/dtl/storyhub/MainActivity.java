@@ -29,6 +29,28 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        initAdminAccount();
+    }
+
+    @Override
+    protected void onResume() {
+        DatabaseHelper.getInstance(this).openDatabase();
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        DatabaseHelper.getInstance(this).closeDatabase();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        DatabaseHelper.getInstance(this).closeDatabase();
+        super.onDestroy();
+    }
+
+    private void initAdminAccount() {
         UserDAO userDAO = new UserDAO(this);
         User admin = new User();
         admin.setFirstName("Long");
@@ -37,16 +59,15 @@ public class MainActivity extends AppCompatActivity {
         admin.setPassword("123456");
         admin.setEmail("longdo.admin@gmail.com");
         admin.setRole(UserRole.ADMIN);
+
         User newUser = userDAO.insertUser(admin);
-        System.out.println(newUser);
+        if(newUser != null) {
+            System.out.println("Create admin account!");
+        }
+        else {
+            System.out.println("Already have admin account!");
+        }
 
-        List<User> userList = userDAO.getAllUsers();
-        System.out.println(userList);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
         DatabaseHelper.getInstance(this).closeDatabase();
     }
 }

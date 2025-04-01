@@ -37,17 +37,12 @@ public class UserDAO {
         db = dbHelper.openDatabase();
     }
 
-//    private void open() throws SQLException {
-//        db = dbHelper.getWritableDatabase();
-//    }
-//
-//    private void close() {
-//        if (db != null && db.isOpen()) {
-//            db.close();
-//        }
-//    }
-
     public User insertUser(User user) {
+        if (isUsernameExists(user.getUsername())) {
+            Log.e("DB_Error " + UserTable.TABLE_NAME, "Username already exists: " + user.getUsername());
+            return null;
+        }
+
         if (isEmailExists(user.getEmail())) {
             Log.e("DB_Error " + UserTable.TABLE_NAME, "Email already exists: " + user.getEmail());
             return null;
@@ -106,8 +101,7 @@ public class UserDAO {
     }
 
     public int deleteUser(int id) {
-        int rowsDeleted = db.delete(UserTable.TABLE_NAME, UserTable.COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
-        return rowsDeleted;
+        return db.delete(UserTable.TABLE_NAME, UserTable.COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
     }
 
     private User cursorToUser(Cursor cursor) {
@@ -125,8 +119,26 @@ public class UserDAO {
         return user;
     }
 
+
+    public User getUserByUsername(String username) {
+        Cursor cursor = db.rawQuery("SELECT * FROM " + UserTable.TABLE_NAME + " WHERE " + UserTable.COLUMN_USERNAME + " = ?", new String[]{username});
+        if(cursor.moveToFirst()) {
+            return cursorToUser(cursor);
+        }
+
+        return null;
+    }
+
     public boolean isEmailExists(String email) {
         Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + UserTable.TABLE_NAME + " WHERE " + UserTable.COLUMN_EMAIL + " = ?", new String[]{email});
+        cursor.moveToFirst();
+        int count = cursor.getInt(0);
+        cursor.close();
+        return count > 0;
+    }
+
+    public boolean isUsernameExists(String username) {
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + UserTable.TABLE_NAME + " WHERE " + UserTable.COLUMN_USERNAME + " = ?", new String[]{username});
         cursor.moveToFirst();
         int count = cursor.getInt(0);
         cursor.close();

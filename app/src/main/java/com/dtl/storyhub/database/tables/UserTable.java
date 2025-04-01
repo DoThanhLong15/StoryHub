@@ -17,7 +17,7 @@ public class UserTable {
             + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + COLUMN_FIRST_NAME + " TEXT NOT NULL, "
             + COLUMN_LAST_NAME + " TEXT NOT NULL, "
-            + COLUMN_USERNAME + " TEXT NOT NULL, "
+            + COLUMN_USERNAME + " TEXT NOT NULL UNIQUE, "
             + COLUMN_EMAIL + " TEXT NOT NULL UNIQUE, "
             + COLUMN_PASSWORD + " TEXT NOT NULL, "
             + COLUMN_AVATAR + " TEXT, "
