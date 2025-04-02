@@ -6,7 +6,6 @@ public class User {
     private int id;
     private String firstName;
     private String lastName;
-    private String username;
     private String email;
     private String password;
     private String avatar;
@@ -23,14 +22,6 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getEmail() {
@@ -103,7 +94,6 @@ public class User {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", avatar='" + avatar + '\'' +
                 ", role='" + role + '\'' +

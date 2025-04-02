@@ -23,7 +23,6 @@ public class UserDAO {
             UserTable.COLUMN_ID,
             UserTable.COLUMN_FIRST_NAME,
             UserTable.COLUMN_LAST_NAME,
-            UserTable.COLUMN_USERNAME,
             UserTable.COLUMN_EMAIL,
             UserTable.COLUMN_PASSWORD,
             UserTable.COLUMN_AVATAR,
@@ -38,11 +37,6 @@ public class UserDAO {
     }
 
     public User insertUser(User user) {
-        if (isUsernameExists(user.getUsername())) {
-            Log.e("DB_Error " + UserTable.TABLE_NAME, "Username already exists: " + user.getUsername());
-            return null;
-        }
-
         if (isEmailExists(user.getEmail())) {
             Log.e("DB_Error " + UserTable.TABLE_NAME, "Email already exists: " + user.getEmail());
             return null;
@@ -51,7 +45,6 @@ public class UserDAO {
         ContentValues values = new ContentValues();
         values.put(UserTable.COLUMN_FIRST_NAME, user.getFirstName());
         values.put(UserTable.COLUMN_LAST_NAME, user.getLastName());
-        values.put(UserTable.COLUMN_USERNAME, user.getUsername());
         values.put(UserTable.COLUMN_EMAIL, user.getEmail());
         values.put(UserTable.COLUMN_PASSWORD, user.getPassword());
         values.put(UserTable.COLUMN_AVATAR, user.getAvatar());
@@ -90,7 +83,6 @@ public class UserDAO {
         ContentValues values = new ContentValues();
         values.put(UserTable.COLUMN_FIRST_NAME, user.getFirstName());
         values.put(UserTable.COLUMN_LAST_NAME, user.getLastName());
-        values.put(UserTable.COLUMN_USERNAME, user.getUsername());
         values.put(UserTable.COLUMN_EMAIL, user.getEmail());
         values.put(UserTable.COLUMN_AVATAR, user.getAvatar());
 
@@ -109,7 +101,6 @@ public class UserDAO {
         user.setId(cursor.getInt(cursor.getColumnIndexOrThrow(UserTable.COLUMN_ID)));
         user.setFirstName(cursor.getString(cursor.getColumnIndexOrThrow(UserTable.COLUMN_FIRST_NAME)));
         user.setLastName(cursor.getString(cursor.getColumnIndexOrThrow(UserTable.COLUMN_LAST_NAME)));
-        user.setUsername(cursor.getString(cursor.getColumnIndexOrThrow(UserTable.COLUMN_USERNAME)));
         user.setEmail(cursor.getString(cursor.getColumnIndexOrThrow(UserTable.COLUMN_EMAIL)));
         user.setPassword(cursor.getString(cursor.getColumnIndexOrThrow(UserTable.COLUMN_PASSWORD)));
         user.setAvatar(cursor.getString(cursor.getColumnIndexOrThrow(UserTable.COLUMN_AVATAR)));
@@ -119,26 +110,20 @@ public class UserDAO {
         return user;
     }
 
-
-    public User getUserByUsername(String username) {
-        Cursor cursor = db.rawQuery("SELECT * FROM " + UserTable.TABLE_NAME + " WHERE " + UserTable.COLUMN_USERNAME + " = ?", new String[]{username});
-        if(cursor.moveToFirst()) {
-            return cursorToUser(cursor);
+    public User getUserByEmail(String email) {
+        Cursor cursor = db.query(UserTable.TABLE_NAME, userColumns, UserTable.COLUMN_EMAIL + " = ?", new String[]{email}, null, null, null);
+        if (cursor.moveToFirst()) {
+            User user = cursorToUser(cursor);
+            cursor.close();
+            return user;
         }
 
+        cursor.close();
         return null;
     }
 
     public boolean isEmailExists(String email) {
         Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + UserTable.TABLE_NAME + " WHERE " + UserTable.COLUMN_EMAIL + " = ?", new String[]{email});
-        cursor.moveToFirst();
-        int count = cursor.getInt(0);
-        cursor.close();
-        return count > 0;
-    }
-
-    public boolean isUsernameExists(String username) {
-        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + UserTable.TABLE_NAME + " WHERE " + UserTable.COLUMN_USERNAME + " = ?", new String[]{username});
         cursor.moveToFirst();
         int count = cursor.getInt(0);
         cursor.close();

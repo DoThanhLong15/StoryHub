@@ -1,4 +1,6 @@
 package com.dtl.storyhub;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,10 +12,12 @@ import com.dtl.storyhub.database.DatabaseHelper;
 import com.dtl.storyhub.database.dao.UserDAO;
 import com.dtl.storyhub.enums.UserRole;
 import com.dtl.storyhub.models.User;
+import com.dtl.storyhub.utils.SessionManager;
 
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,44 +31,70 @@ public class MainActivity extends AppCompatActivity {
         });
 
         initAdminAccount();
+
+        sessionManager = new SessionManager(this);
+        handleLoginSession();
+
     }
 
     @Override
     protected void onResume() {
-        DatabaseHelper.getInstance(this).openDatabase();
         super.onResume();
+        DatabaseHelper.getInstance(this).openDatabase();
     }
 
     @Override
     protected void onPause() {
-        DatabaseHelper.getInstance(this).closeDatabase();
         super.onPause();
+        DatabaseHelper.getInstance(this).closeDatabase();
     }
 
     @Override
     protected void onDestroy() {
-        DatabaseHelper.getInstance(this).closeDatabase();
         super.onDestroy();
+        DatabaseHelper.getInstance(this).closeDatabase();
     }
 
     private void initAdminAccount() {
-        UserDAO userDAO = new UserDAO(this);
-        User admin = new User();
-        admin.setFirstName("Long");
-        admin.setLastName("Do");
-        admin.setUsername("admin");
-        admin.setPassword("123456");
-        admin.setEmail("longdo.admin@gmail.com");
-        admin.setRole(UserRole.ADMIN);
+        SharedPreferences prefs = getSharedPreferences("StoryHub", MODE_PRIVATE);
+        boolean isFirstRun = prefs.getBoolean("isFirstRun", true);
 
-        User newUser = userDAO.insertUser(admin);
-        if(newUser != null) {
-            System.out.println("Create admin account!");
-        }
-        else {
-            System.out.println("Already have admin account!");
+        if (isFirstRun) {
+            UserDAO userDAO = new UserDAO(this);
+            User admin = new User();
+            admin.setFirstName("Long");
+            admin.setLastName("Do");
+            admin.setPassword("123456");
+            admin.setEmail("admin@gmail.com");
+            admin.setRole(UserRole.ADMIN);
+
+            User newUser = userDAO.insertUser(admin);
+            if (newUser != null) {
+                System.out.println("\n--> Create admin account!\n");
+            } else {
+                System.out.println("\n--> Already have admin account!\n");
+            }
+
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("isFirstRun", false);
+            editor.apply();
         }
 
+        System.out.println("\n--> Not first run\n");
         DatabaseHelper.getInstance(this).closeDatabase();
+    }
+
+    private void handleLoginSession() {
+        String email = sessionManager.getEmail();
+
+        if (!sessionManager.isLoggedIn()) {
+            System.out.println("\n--> No user session found. Redirecting to Login...\n");
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        }
+
+        System.out.println("\nUser logged in: " + email + "\n");
+        setContentView(R.layout.activity_main);
     }
 }

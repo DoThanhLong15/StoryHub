@@ -5,7 +5,6 @@ public class UserTable {
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_FIRST_NAME = "first_name";
     public static final String COLUMN_LAST_NAME = "last_name";
-    public static final String COLUMN_USERNAME = "username";
     public static final String COLUMN_EMAIL = "email";
     public static final String COLUMN_PASSWORD = "password";
     public static final String COLUMN_AVATAR = "avatar";
@@ -17,7 +16,6 @@ public class UserTable {
             + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + COLUMN_FIRST_NAME + " TEXT NOT NULL, "
             + COLUMN_LAST_NAME + " TEXT NOT NULL, "
-            + COLUMN_USERNAME + " TEXT NOT NULL UNIQUE, "
             + COLUMN_EMAIL + " TEXT NOT NULL UNIQUE, "
             + COLUMN_PASSWORD + " TEXT NOT NULL, "
             + COLUMN_AVATAR + " TEXT, "
